@@ -1,0 +1,31 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { Route, Routes } from 'react-router-dom';
+import Home from '../customer/pages/Home/Home';
+import Products from '../customer/pages/Products/Products';
+import ProductDetails from '../customer/pages/Products/ProductDetails/ProductDetails';
+import Cart from '../customer/pages/Cart/Cart';
+import Address from '../customer/pages/Checkout/AddressPage';
+import Profile from '../customer/pages/Account/Profile';
+import Footer from '../customer/components/Footer/Footer';
+import Navbar from '../customer/components/Navbar/Navbar';
+import NotFound from '../customer/pages/NotFound/NotFound';
+import Auth from '../customer/pages/Auth/Auth';
+import { useAppDispatch, useAppSelector } from '../Redux Toolkit/Store';
+import { fetchUserCart } from '../Redux Toolkit/Customer/CartSlice';
+import PaymentSuccessHandler from '../customer/pages/Pyement/PaymentSuccessHandler';
+import Reviews from '../customer/pages/Review/Reviews';
+import WriteReviews from '../customer/pages/Review/WriteReview';
+import Wishlist from '../customer/pages/Wishlist/Wishlist';
+import { getWishlistByUserId } from '../Redux Toolkit/Customer/WishlistSlice';
+import SearchProducts from '../customer/pages/Search/SearchProducts';
+import { useEffect } from 'react';
+const CustomerRoutes = () => {
+    const dispatch = useAppDispatch();
+    const { auth } = useAppSelector(store => store);
+    useEffect(() => {
+        dispatch(fetchUserCart(localStorage.getItem("jwt") || ""));
+        dispatch(getWishlistByUserId());
+    }, [auth.jwt]);
+    return (_jsxs(_Fragment, { children: [_jsx(Navbar, {}), _jsxs(Routes, { children: [_jsx(Route, { path: '/', element: _jsx(Home, {}) }), _jsx(Route, { path: '/products/:categoryId', element: _jsx(Products, {}) }), _jsx(Route, { path: '/search-products', element: _jsx(SearchProducts, {}) }), _jsx(Route, { path: '/reviews/:productId', element: _jsx(Reviews, {}) }), _jsx(Route, { path: '/reviews/:productId/create', element: _jsx(WriteReviews, {}) }), _jsx(Route, { path: '/product-details/:categoryId/:name/:productId', element: _jsx(ProductDetails, {}) }), _jsx(Route, { path: '/cart', element: _jsx(Cart, {}) }), _jsx(Route, { path: '/wishlist', element: _jsx(Wishlist, {}) }), _jsx(Route, { path: '/checkout/address', element: _jsx(Address, {}) }), _jsx(Route, { path: '/account/*', element: _jsx(Profile, {}) }), _jsx(Route, { path: '/login', element: _jsx(Auth, {}) }), _jsx(Route, { path: '/payment-success/:orderId', element: _jsx(PaymentSuccessHandler, {}) }), _jsx(Route, { path: '*', element: _jsx(NotFound, {}) })] }), _jsx(Footer, {})] }));
+};
+export default CustomerRoutes;

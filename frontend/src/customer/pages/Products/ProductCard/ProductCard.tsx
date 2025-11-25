@@ -16,11 +16,10 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import ChatBot from "../../ChatBot/ChatBot";
 
 interface ProductCardProps {
-  // images: string[];
-  // categoryId: string | undefined;
   item: Product;
-  categoryId: string
+  categoryId: string;
 }
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -39,9 +38,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
   const dispatch = useAppDispatch();
   const [showChatBot, setShowChatBot] = useState(false);
 
-  const handleAddWishlist = (event: MouseEvent) => {
+  const handleAddWishlist = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.stopPropagation();
     if (item._id) dispatch(addProductToWishlist({ productId: item._id }));
+  };
+
+  const handleShowChatBot = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
+    setShowChatBot(true);
+  };
+
+  const handleCloseChatBot = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
+    setShowChatBot(false);
   };
 
   useEffect(() => {
@@ -49,21 +64,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
     if (isHovered) {
       interval = setInterval(() => {
         setCurrentImage((prevImage) => (prevImage + 1) % item.images.length);
-      }, 1000); // Change image every 1 second
+      }, 1000);
     } else if (interval) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [isHovered, item.images.length]);
-
-  const handleShowChatBot = (event: MouseEvent) => {
-    event.stopPropagation();
-    setShowChatBot(true);
-  };
-  const handleCloseChatBot = (e: MouseEvent) => {
-    e.stopPropagation();
-    setShowChatBot(false);
-  };
 
   return (
     <>
@@ -76,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
         className="group px-4 relative"
       >
         <div
-          className="card "
+          className="card"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -91,14 +97,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
               }}
             />
           ))}
+
           {isHovered && (
             <div className="indicator flex flex-col items-center space-y-2">
               <div className="flex gap-4">
                 {item.images.map((_, index: number) => (
                   <button
                     key={index}
-                    className={`indicator-button ${index === currentImage ? "active" : ""
-                      }`}
+                    className={`indicator-button ${
+                      index === currentImage ? "active" : ""
+                    }`}
                     onClick={() => setCurrentImage(index)}
                   />
                 ))}
@@ -106,11 +114,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
 
               <div className="flex gap-3">
                 {wishlist.wishlist && (
-                  <Button 
+                  <Button
                     variant="contained"
                     color="secondary"
                     sx={{ zIndex: 10 }}
-                    className=" z-50"
+                    className="z-50"
                     onClick={handleAddWishlist}
                   >
                     {isWishlisted(wishlist.wishlist, item) ? (
@@ -120,6 +128,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
                     )}
                   </Button>
                 )}
+
                 <Button
                   onClick={handleShowChatBot}
                   color="secondary"
@@ -131,19 +140,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
             </div>
           )}
         </div>
-        <div className="details pt-3 space-y-1 group-hover-effect  rounded-md ">
-          <div className="name space-y ">
+
+        <div className="details pt-3 space-y-1 group-hover-effect rounded-md">
+          <div className="name space-y">
             <h1 className="font-semibold text-lg">
               {item.seller?.businessDetails?.businessName}
             </h1>
-            <p className="">{item.title}</p>
+            <p>{item.title}</p>
           </div>
-          <div className="price flex items-center gap-3 ">
+
+          <div className="price flex items-center gap-3">
             <span className="font-semibold text-gray-800">
-              {" "}
               ₹{item.sellingPrice}
             </span>
-            <span className="text thin-line-through text-gray-400 ">
+            <span className="text thin-line-through text-gray-400">
               ₹{item.mrpPrice}
             </span>
             <span className="text-[#00927c] font-semibold">
@@ -152,6 +162,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, categoryId }) => {
           </div>
         </div>
       </div>
+
       {showChatBot && (
         <section className="absolute left-16 top-0">
           <Modal

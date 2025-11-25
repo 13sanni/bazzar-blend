@@ -1,0 +1,43 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Avatar, Badge, Box, Button, Drawer, IconButton, useMediaQuery, useTheme, } from "@mui/material";
+import React, { useState } from "react";
+import "./Navbar.css";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import StorefrontIcon from "@mui/icons-material/Storefront";
+import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
+import { mainCategory } from "../../../data/category/mainCategory";
+import CategorySheet from "./CategorySheet";
+import DrawerList from "./DrawerList";
+import { useNavigate } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useAppDispatch, useAppSelector } from "../../../Redux Toolkit/Store";
+import { FavoriteBorder } from "@mui/icons-material";
+const Navbar = () => {
+    const [showSheet, setShowSheet] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState("men");
+    const theme = useTheme();
+    const isLarge = useMediaQuery(theme.breakpoints.up("lg"));
+    const dispatch = useAppDispatch();
+    const { user, auth, cart, sellers } = useAppSelector((store) => store);
+    const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
+    const toggleDrawer = (newOpen) => () => {
+        setOpen(newOpen);
+    };
+    const becomeSellerClick = () => {
+        if (sellers.profile?._id) {
+            navigate("/seller");
+        }
+        else
+            navigate("/become-seller");
+    };
+    return (_jsxs(Box, { sx: { zIndex: 2 }, className: "sticky top-0 left-0 right-0 bg-white blur-bg bg-opacity-80 ", children: [_jsxs("div", { className: "flex items-center justify-between px-5 lg:px-20 h-[70px] border-b", children: [_jsxs("div", { className: "flex items-center gap-9", children: [_jsxs("div", { className: "flex items-center gap-2", children: [!isLarge && (_jsx(IconButton, { onClick: () => toggleDrawer(true)(), children: _jsx(MenuIcon, { className: "text-gray-700", sx: { fontSize: 29 } }) })), _jsx("h1", { onClick: () => navigate("/"), className: "logo cursor-pointer text-lg md:text-2xl  text-[#00927c]", children: "Bazaar Blend" })] }), isLarge && (_jsx("ul", { className: "flex it\r\n          ems-center font-medium text-gray-800 ", children: mainCategory.map((item) => (_jsx("li", { onMouseLeave: () => {
+                                        // setSelectedCategory("")
+                                        setShowSheet(false);
+                                    }, onMouseEnter: () => {
+                                        setSelectedCategory(item.categoryId);
+                                        setShowSheet(true);
+                                    }, className: "mainCategory hover:text-[#00927c] cursor-pointer hover:border-b-2 h-[70px] px-4 border-[#00927c] flex items-center", children: item.name }))) }))] }), _jsxs("div", { className: "flex gap-1 lg:gap-6 items-center", children: [_jsx(IconButton, { onClick: () => navigate("/search-products"), children: _jsx(SearchIcon, { className: "text-gray-700", sx: { fontSize: 29 } }) }), user.user ? (_jsxs(Button, { onClick: () => navigate("/account/orders"), className: "flex items-center gap-2", children: [_jsx(Avatar, { sx: { width: 29, height: 29 }, src: "https://cdn.pixabay.com/photo/2015/04/15/09/28/head-723540_640.jpg" }), _jsx("h1", { className: "font-semibold hidden lg:block", children: user.user?.fullName?.split(" ")[0] })] })) : (_jsx(Button, { variant: "contained", startIcon: _jsx(AccountCircleIcon, { sx: { fontSize: "12px" } }), onClick: () => navigate("/login"), children: "Login" })), _jsx(IconButton, { onClick: () => navigate("/wishlist"), children: _jsx(FavoriteBorder, { sx: { fontSize: 29 }, className: "text-gray-700" }) }), _jsx(IconButton, { onClick: () => navigate("/cart"), children: _jsx(Badge, { badgeContent: cart.cart?.cartItems.length, color: "primary", children: _jsx(AddShoppingCartIcon, { sx: { fontSize: 29 }, className: "text-gray-700" }) }) }), isLarge && (_jsx(Button, { onClick: becomeSellerClick, startIcon: _jsx(StorefrontIcon, {}), variant: "outlined", children: "Become Seller" }))] })] }), _jsx(Drawer, { open: open, onClose: toggleDrawer(false), children: _jsx(DrawerList, { toggleDrawer: toggleDrawer }) }), showSheet && selectedCategory && (_jsx("div", { onMouseLeave: () => setShowSheet(false), onMouseEnter: () => setShowSheet(true), className: "categorySheet absolute top-[4.41rem] left-20 right-20 ", children: _jsx(CategorySheet, { setShowSheet: setShowSheet, selectedCategory: selectedCategory }) }))] }));
+};
+export default Navbar;

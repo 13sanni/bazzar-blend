@@ -58,7 +58,10 @@ const Products = () => {
         : undefined,
     };
 
-    dispatch(getAllProducts({ category: categoryId, sort, ...newFilters }));
+    dispatch(
+  getAllProducts({ category: categoryId ?? "", sort, ...newFilters })
+);
+
   }, [searchParams, categoryId, sort, page]);
 
   // console.log(" store ", products)
@@ -111,7 +114,8 @@ const Products = () => {
             gap-y-5 px-5 justify-center">
               {products.products.map((item: any) => (
                 <div key={item._id} className="">
-                  <ProductCard item={item} categoryId={categoryId} />
+                  <ProductCard item={item} categoryId={categoryId ?? ""} />
+
                 </div>
               ))}
             </section>
