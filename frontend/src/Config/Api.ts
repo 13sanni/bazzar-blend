@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const API_URL = "http://localhost:8080";
-export const DEPLOYED_URL = ""
+export const DEPLOYED_URL = "https://bazzar-blend.vercel.app/"
 // change api
 
 export const api = axios.create({
