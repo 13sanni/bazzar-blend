@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const API_URL = "https://bazzar-blend-backend.vercel.app";
+export const API_URL = "https://bazzar-blend.onrender.com";
 
 // change api
 export const api = axios.create({
