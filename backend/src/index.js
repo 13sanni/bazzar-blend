@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send({message:'Welcome To blend bazzar Backend System!'});
+  res.send({message:'Welcome To blend bazzarBackend System!'});
 });
 
 app.use(bodyParser.json());
